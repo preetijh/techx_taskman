@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechXSolution - Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="..\static\css\dashboard-style.css">
+</head>
+<body>
+    
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <img src="/static/images/Techxlight.png" alt="TechXSolution Logo" class="logo">
+                <h3>TechXSolution</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="\admin-dashboard" data-page="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="\tasks" data-page="tasks">
+                        <i class="fas fa-tasks"></i> Tasks
+                    </a>
+                </li>
+                <li>
+                    <a href="\users" data-page="users">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+                <li>
+                    <a href="\teams" data-page="teams">
+                        <i class="fas fa-user-friends"></i> Teams
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="\reports" data-page="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                </li> -->
+                <li>
+                    <a href="\settings" data-page="settings">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    
+                    <div class="ms-auto d-flex align-items-center">
+                        <div class="dropdown me-3">
+                            <!-- <button class="btn position-relative" type="button" id="notificationDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    3
+                                </span>
+                            </button> -->
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                                <li><a class="dropdown-item" href="#">New task assigned</a></li>
+                                <li><a class="dropdown-item" href="#">Task completed</a></li>
+                                <li><a class="dropdown-item" href="#">New user registered</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <button class="btn d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                                
+                                <span>Admin</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <!-- <li>
+                                    <a class="dropdown-item" href="#" data-action="profile">
+                                        <i class="fas fa-user me-2"></i>Profile
+                                    </a>
+                                </li> -->
+                                <li>
+                                    <a class="dropdown-item" href="/settings" data-action="settings">
+                                        <i class="fas fa-cog me-2"></i>Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="/login" data-action="logout">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid p-4">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stats-card bg-primary">
+                            <div class="stats-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3>{{ total_tasks }}</h3>
+                                <p>Total Tasks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card bg-success">
+                            <div class="stats-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3>{{ completed_tasks }}</h3>
+                                <p>Completed Tasks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card bg-warning">
+                            <div class="stats-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3>{{ total_users }}</h3>
+                                <p>Total Users</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stats-card bg-info">
+                            <div class="stats-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="stats-info">
+                                <h3>{{ active_teams }}</h3>
+                                <p>Active Teams</p>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Recent Tasks & Quick Actions -->
+                <div class="row">
+                    <!-- Recent Tasks -->
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Recent Tasks</h5>
+                               
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Task</th>
+                                                <th>Assigned To</th>
+                                                <th>Due Date</th>
+                                                <th>Status</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for task in recent_tasks %}
+                                                <tr>
+                                                    <td>{{ task.task_title }}</td>
+                                                    <td>{{ task.assigned_to }}</td>
+                                                    <td>{{ task.due_date }}</td>
+                                                    <td>
+                                                        <span class="badge bg-{{ task.status_badge }}">{{ task.status }}</span>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Quick Actions -->
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Quick Actions</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-actions">
+                                    <button class="btn btn-light w-100 mb-3" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                                        <i class="fas fa-user-plus"></i> Add New User
+                                    </button>
+                                    <button class="btn btn-light w-100 mb-3" onclick="location.href='/teams'">
+                                        <i class="fas fa-users"></i> Create Team
+                                    </button>
+                                    <button class="btn btn-light w-100 mb-3" data-bs-toggle="modal" data-bs-target="#exportReportModal">
+                                        <i class="fas fa-file-export"></i> Export Reports
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTaskForm">
+                        <div class="mb-3">
+                            <label class="form-label">Task Title</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Assign To</label>
+                            <select class="form-select">
+                                <option>John Doe</option>
+                                <option>Jane Smith</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Add Task</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/admin-dashboard">
+                        <h4>Add New User</h4>
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="full_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" name="role" required>
+                                <option value="admin">Admin</option>
+                                <option value="developer">Developer</option>
+                                <option value="designer">Designer</option>
+                                <option value="manager">Project Manager</option>
+                                <option value="tester">QA Tester</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="team" class="form-label">Team</label>
+                            <select class="form-select" name="team" required>
+                                <option value="frontend">Frontend Team</option>
+                                <option value="backend">Backend Team</option>
+                                <option value="design">Design Team</option>
+                                <option value="testing">Testing Team</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profile_image" class="form-label">Profile Image</label>
+                            <input type="text" class="form-control" name="profile_image" placeholder="Enter image file name">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                    </form>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <!-- <button type="submit" class="btn btn-primary">Add User</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Added Success Modal -->
+    <div class="modal fade" id="userAddedModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <i class="fas fa-check-circle text-success" style="font-size: 48px;"></i>
+                        <h4 class="mt-3">User Added Successfully!</h4>
+                        <p class="mb-0">The new user has been created and can now log in.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Create Team Modal -->
+ <div class="modal fade" id="createTeamModal" tabindex="-1" aria-labelledby="createTeamModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTeamModalLabel">Create New Team</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createTeamForm">
+                    <!-- Team Name -->
+                    <div class="mb-3">
+                        <label for="teamName" class="form-label">Team Name</label>
+                        <input type="text" class="form-control" id="teamName" name="teamName" required>
+                    </div>
+                    <!-- Department -->
+                    <div class="mb-3">
+                        <label for="teamDepartment" class="form-label">Department</label>
+                        <select class="form-select" id="teamDepartment" name="teamDepartment" required>
+                            <option value="Admin">Admin</option>
+                            <option value="development">Development</option>
+                            <option value="design">Design</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="sales">Sales</option>
+                            <option value="hr">Human Resources</option>
+                        </select>
+                    </div>
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label for="teamDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="teamDescription" name="teamDescription" required></textarea>
+                    </div>
+                    <!-- Team Leader -->
+                    <div class="mb-3">
+                        <label for="teamLeader" class="form-label">Team Leader</label>
+                        <select class="form-select" id="teamLeader" name="teamLeader" required>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user['Full Name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Team Members -->
+                    <div class="mb-3">
+                        <label for="teamMembers" class="form-label">Team Members</label>
+                        <select class="form-select" id="teamMembers" name="teamMembers" multiple required>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user['Full Name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Team Status -->
+                    <div class="mb-3">
+                        <label for="teamStatus" class="form-label">Team Status</label>
+                        <select class="form-select" id="teamStatus" name="teamStatus" required>
+                            <option value="active">Active</option>
+                            <option value="on_hold">On Hold</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <!-- Team Color -->
+                    <div class="mb-3">
+                        <label for="teamColor" class="form-label">Team Color</label>
+                        <input type="color" class="form-control" id="teamColor" name="teamColor" required>
+                    </div>
+                    <!-- Submit Button -->
+                    <button type="button" class="btn btn-primary" onclick="createNewTeam()">Create Team</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Team Created Success Modal -->
+<div class="modal fade" id="teamCreatedModal" tabindex="-1" aria-labelledby="teamCreatedModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="teamCreatedModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <i class="fas fa-users-cog text-success success-icon"></i>
+                <h4 class="mt-3">Team Created Successfully!</h4>
+                <p>The new team has been created and members have been notified.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Export Reports Modal -->
+    <div class="modal fade" id="exportReportModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Export Reports</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="exportReportForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Report Type</label>
+                                <select class="form-select" id="reportType" required>
+                                    <option value="">Select Report Type</option>
+                                    <option value="task_summary">Task Summary Report</option>
+                                    <option value="team_performance">Team Performance Report</option>
+                                    <option value="user_activity">User Activity Report</option>
+                                    <option value="project_status">Project Status Report</option>
+                                    <option value="time_tracking">Time Tracking Report</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Export Format</label>
+                                <select class="form-select" id="exportFormat" required>
+                                    <option value="">Select Format</option>
+                                    <option value="pdf">PDF Document</option>
+                                    <option value="excel">Excel Spreadsheet</option>
+                                    <option value="csv">CSV File</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Date Range</label>
+                                <select class="form-select" id="dateRange" required>
+                                    <option value="">Select Date Range</option>
+                                    <option value="today">Today</option>
+                                    <option value="yesterday">Yesterday</option>
+                                    <option value="last_7_days">Last 7 Days</option>
+                                    <option value="last_30_days">Last 30 Days</option>
+                                    <option value="this_month">This Month</option>
+                                    <option value="last_month">Last Month</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3" id="customDateRange" style="display: none;">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="startDate">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label">End Date</label>
+                                        <input type="date" class="form-control" id="endDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Include Sections</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="includeSummary" checked>
+                                <label class="form-check-label" for="includeSummary">Summary Overview</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="includeCharts" checked>
+                                <label class="form-check-label" for="includeCharts">Charts and Graphs</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="includeDetails" checked>
+                                <label class="form-check-label" for="includeDetails">Detailed Records</label>
+                            </div>
+                        </div>
+
+                        <div id="reportPreview" class="border rounded p-3 mb-3" style="display: none;">
+                            <h6 class="mb-3">Report Preview</h6>
+                            <div class="report-preview-content"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-info" onclick="previewReport()">
+                        <i class="fas fa-eye me-2"></i>Preview
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="exportReport()">
+                        <i class="fas fa-file-export me-2"></i>Export Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Progress Modal -->
+    <div class="modal fade" id="exportProgressModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center p-4">
+                    <div class="spinner-border text-primary mb-3" role="status"></div>
+                    <h5>Generating Report...</h5>
+                    <div class="progress mt-3">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="notifications.js"></script>
+<script>
+    // Initialize notification system
+    const notificationSystem = new NotificationSystem();
+
+    // Example of how to add a new notification
+    function addNewNotification(type, message) {
+        notificationSystem.addNotification({
+            type: type,
+            message: message
+        });
+    }
+</script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html> 

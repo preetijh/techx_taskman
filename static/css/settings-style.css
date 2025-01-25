@@ -1,0 +1,123 @@
+/* Settings Navigation */
+.settings-nav {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.settings-nav .list-group-item {
+    border: none;
+    padding: 12px 20px;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.settings-nav .list-group-item:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+}
+
+.settings-nav .list-group-item.active {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+/* Profile Image */
+.profile-image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.image-overlay:hover {
+    transform: scale(1.1);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Form Elements */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px 15px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+}
+
+/* Login History */
+.login-history {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.login-entry {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.login-entry:last-child {
+    border-bottom: none;
+}
+
+/* Switches */
+.form-switch .form-check-input {
+    width: 45px;
+    height: 24px;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .settings-nav {
+        margin-bottom: 20px;
+    }
+} 

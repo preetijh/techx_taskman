@@ -1,0 +1,130 @@
+/* Add these styles to enhance the chat interface */
+
+.chat-container {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.message {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-actions {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    background: white;
+    padding: 4px;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.message-actions button {
+    border: none;
+    background: transparent;
+    padding: 4px 8px;
+    cursor: pointer;
+    color: var(--gray-color);
+    transition: color 0.2s ease;
+}
+
+.message-actions button:hover {
+    color: var(--primary-color);
+}
+
+.typing-indicator {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    gap: 4px;
+}
+
+.typing-bubble {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gray-color);
+    animation: typing 1s infinite;
+}
+
+.typing-bubble:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-bubble:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+.file-attachment {
+    margin-top: 8px;
+    padding: 8px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.file-icon {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.reaction-picker {
+    position: absolute;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 8px;
+    display: flex;
+    gap: 4px;
+    z-index: 1000;
+}
+
+.reaction-picker span {
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.reaction-picker span:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.message-reactions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.reaction-badge {
+    background: rgba(0,0,0,0.05);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.reaction-badge:hover {
+    background: rgba(0,0,0,0.1);
+}
+
+/* Add more styles as needed */ 

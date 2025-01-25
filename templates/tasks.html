@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechXSolution - Task Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="..\static\css\dashboard-style.css">
+    <link rel="stylesheet" href="..\static\css\tasks-style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar (same as dashboard) -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <img src="/static/images/Techxlight.png" alt="TechXSolution Logo" class="logo">
+                <h3>TechXSolution</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="\admin-dashboard" data-page="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="\tasks" data-page="tasks">
+                        <i class="fas fa-tasks"></i> Tasks
+                    </a>
+                </li>
+                <li>
+                    <a href="\users" data-page="users">
+                        <i class="fas fa-users"></i> Users
+                    </a>
+                </li>
+                <li>
+                    <a href="/teams" data-page="teams">
+                        <i class="fas fa-user-friends"></i> Teams
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="/reports" data-page="reports">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                </li> -->
+                <li>
+                    <a href="/settings" data-page="settings">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    
+                    <div class="ms-auto d-flex align-items-center">
+                        <div class="dropdown me-3">
+                            <!-- <button class="btn position-relative" type="button" id="notificationDropdown" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    3
+                                </span>
+                            </button> -->
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                                <li><a class="dropdown-item" href="#">New task assigned</a></li>
+                                <li><a class="dropdown-item" href="#">Task deadline approaching</a></li>
+                                <li><a class="dropdown-item" href="#">Task status updated</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <button class="btn d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                                <!-- <img src="admin-avatar.jpg" alt="Admin" class="avatar me-2"> -->
+                                <span>Admin</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <!-- <li>
+                                    <a class="dropdown-item" href="#" data-action="profile">
+                                        <i class="fas fa-user me-2"></i>Profile
+                                    </a>
+                                </li> -->
+                                <li>
+                                    <a class="dropdown-item" href="/settings" data-action="settings">
+                                        <i class="fas fa-cog me-2"></i>Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="/login" data-action="logout">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Tasks Section -->
+<div class="container mt-4">
+    <h2>All Tasks</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Task Title</th>
+                <th>Priority</th>
+                <th>Description</th>
+                <th>Assigned To</th>
+                <th>Start Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.task_title }}</td>
+                    <td>{{ task.priority }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.assign_to }}</td>
+                    <td>{{ task.start_date }}</td>
+                    <td>{{ task.due_date }}</td>
+                    <td>{{ task.status }}</td>
+                    <td>
+                        <form action="/delete_task/{{ task.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this task?')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+            <!-- Main Content -->
+            <div class="container-fluid p-4">
+                <!-- Task Management Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="page-title">Task Management</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createTaskModal">
+                        <i class="fas fa-plus me-2"></i>Create New Task
+                    </button>
+                </div>
+
+                <div class="task-board">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="task-column">
+                                <div class="task-column-header bg-warning">
+                                    <h5>Pending</h5>
+                                    <span class="task-count">{{ pending_count }}</span> 
+                                </div>
+                                <div class="task-list" id="pendingTasks">
+                                    {% for task in pending_tasks %}
+                                        <div class="task-card">
+                                            <p>{{ task.task_title }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-md-3">
+                            <div class="task-column">
+                                <div class="task-column-header bg-primary">
+                                    <h5>In Progress</h5>
+                                    <span class="task-count">{{ in_progress_count }}</span> 
+                                </div>
+                                <div class="task-list" id="inProgressTasks">
+                                    {% for task in in_progress_tasks %}
+                                        <div class="task-card">
+                                            <p>{{ task.task_title }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-md-3">
+                            <div class="task-column">
+                                <div class="task-column-header bg-info">
+                                    <h5>Review</h5>
+                                    <span class="task-count">{{ review_count }}</span> 
+                                </div>
+                                <div class="task-list" id="reviewTasks">
+                                    {% for task in review_tasks %}
+                                        <div class="task-card">
+                                            <p>{{ task.task_title }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-md-3">
+                            <div class="task-column">
+                                <div class="task-column-header bg-success">
+                                    <h5>Completed</h5>
+                                    <span class="task-count">{{ completed_count }}</span> 
+                                </div>
+                                <div class="task-list" id="completedTasks">
+                                    {% for task in completed_tasks %}
+                                        <div class="task-card">
+                                            <p>{{ task.task_title }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+   <!-- Create Task Modal -->
+<div class="modal fade" id="createTaskModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/tasks" method="POST">
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label class="form-label">Task Title</label>
+                            <input type="text" class="form-control" name="taskTitle" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Priority</label>
+                            <select class="form-select" name="priority" required>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Assign To</label>
+                            <select class="form-select" name="assignTo" required>
+                                <option value="" disabled selected>Select Assignee</option>
+                                {% for user in users %}
+                                    <option value="{{ user.id }}">{{ user['Full Name'] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Team</label>
+                            <select class="form-select" name="teamId" required>
+                                <option value="" disabled selected>Select Team</option>
+                                {% for team in teams %}
+                                    <option value="{{ team.id }}">{{ team.team_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" name="startDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Due Date</label>
+                            <input type="date" class="form-control" name="dueDate" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Attachments</label>
+                        <input type="text" class="form-control" name="attachments" multiple>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="notifications.js"></script>
+<script>
+    // Initialize notification system
+    const notificationSystem = new NotificationSystem();
+
+    // Example of how to add a new notification
+    function addNewNotification(type, message) {
+        notificationSystem.addNotification({
+            type: type,
+            message: message
+        });
+    }
+</script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="tasks.js"></script>
+</body>
+</html> 

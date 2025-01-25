@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechXSolution - User Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="..\static\css\user-dashboard-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <img src="/static/images/Techxlight.png" alt="TechXSolution Logo" class="logo">
+                <h3>TechXSolution</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="/user-dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/my-tasks">
+                        <i class="fas fa-tasks"></i> My Tasks
+                    </a>
+                </li>
+                <li>
+                    <a href="my-team">
+                        <i class="fas fa-users"></i> My Team
+                    </a>
+                </li>
+                <!-- <li>
+                    <a href="calendar.html">
+                        <i class="fas fa-calendar"></i> Calendar
+                    </a>
+                </li> -->
+            </ul>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <!-- <button type="button" id="sidebarCollapse" class="btn">
+                        <i class="fas fa-bars"></i>
+                    </button> -->
+
+                    <div class="ms-auto d-flex align-items-center">
+                        <!-- Search -->
+                        <!-- <div class="search-box me-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-end-0">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0" placeholder="Search...">
+                            </div>
+                        </div> -->
+
+                        <!-- Notifications -->
+                        <div class="dropdown me-3">
+                           
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">New task assigned</a></li>
+                                <li><a class="dropdown-item" href="#">Team meeting reminder</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- User Profile -->
+                        <div class="user-profile dropdown">
+                            <button class="btn d-flex align-items-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                                
+                                <div class="user-info ms-2">
+                                    <span class="user-name">{{ full_name }}</span>
+                                    <small class="user-role">{{Role}}</small>
+                                </div>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" data-action="profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/login"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <div class="container-fluid p-4">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <h4>Welcome back, {{ full_name }}!</h4> 
+                                <p class="text-muted">Here's what's happening with your tasks and team today.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Stats Row -->
+                <div class="row mb-4">
+                    <div class="container-fluid p-4">
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="dashboard-card stat-card">
+                                    <div class="card-body">
+                                        <h5>My Tasks</h5>
+                                        <h3>{{ total_tasks }}</h3>
+                                        <p class="mb-0">{{ pending_tasks }} pending</p> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dashboard-card stat-card">
+                                    <div class="card-body">
+                                        <h5>Team Members</h5>
+                                        <h3>{{ team_members }}</h3>
+                                        <p class="mb-0">{{ team }}</p> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="dashboard-card stat-card">
+                                    <div class="card-body">
+                                        <h5>Completed Tasks</h5>
+                                        <h3>{{ completed_tasks }}</h3>
+                                        <p class="mb-0">This month</p> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+               
+                  <!--- <div class="col-md-8 mb-4">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title">My Tasks</h5>
+                                <div class="table-responsive">
+                                    <table class="table custom-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Task</th>
+                                                <th>Due Date</th>
+                                                <th>Priority</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Update user interface</td>
+                                                <td>Today</td>
+                                                <td><span class="badge bg-danger">High</span></td>
+                                                <td><span class="badge bg-warning">In Progress</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fix login bug</td>
+                                                <td>Tomorrow</td>
+                                                <td><span class="badge bg-warning">Medium</span></td>
+                                                <td><span class="badge bg-info">To Do</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Write documentation</td>
+                                                <td>Next Week</td>
+                                                <td><span class="badge bg-info">Low</span></td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="dashboard-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Team Members</h5>
+                                <div class="team-members">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="team-member1.jpg" alt="Team Member" class="avatar me-2">
+                                        <div>
+                                            <h6 class="mb-0">Sarah Johnson</h6>
+                                            <small class="text-muted">Team Lead</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="team-member2.jpg" alt="Team Member" class="avatar me-2">
+                                        <div>
+                                            <h6 class="mb-0">Mike Chen</h6>
+                                            <small class="text-muted">Developer</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <img src="team-member3.jpg" alt="Team Member" class="avatar me-2">
+                                        <div>
+                                            <h6 class="mb-0">Emma Wilson</h6>
+                                            <small class="text-muted">Designer</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="user-dashboard.js"></script>
+</body>
+</html> 
